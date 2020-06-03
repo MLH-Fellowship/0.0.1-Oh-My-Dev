@@ -2,15 +2,15 @@
 
 function fetch_api() {
   base_url="https://dev.to/api";
-  path="/articles";
+  url_path="/articles";
+  url=$base_url$url_path;
   
-  response=$(curl "$base_url$path");
-
-  return response;
+  response=$(curl $url);
+  echo $response;
 }
 
 function oh_my_dev() {
-  fetch_api;
+  api_response=$(fetch_api);
 }
-  
+
 oh_my_dev;
