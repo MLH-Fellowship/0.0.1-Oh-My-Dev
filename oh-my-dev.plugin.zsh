@@ -24,7 +24,7 @@ function oh_my_dev() {
   echo;
   echo "Previewing articles:";
   for row in $(jq -r '.[] | @base64' <<< $api_response); do
-    _jq() {
+    function _jq() {
       echo $row | base64 --decode | jq -r $1;
     }
 
