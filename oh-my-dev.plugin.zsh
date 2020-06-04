@@ -13,6 +13,20 @@ function color() {
   echo $fg[$1]$2$reset_color;
 }
 
+function format_and_print_article() {
+  echo;
+  echo "----------";
+  eval $(echo $1 | base64 --decode | jq -r '@sh "title=\(.title) description=\(.description) name=\(.user.username) date=\(.readable_publish_date) url=\(.canonical_url)"');
+  echo $(color yellow $title);
+  echo "  Published by $(color yellow $name) on $(color yellow $date)";
+  echo;
+  echo $(color yellow $description);
+  echo;
+  echo "Read the full article on $(color yellow $url)";
+  echo "----------";
+  echo;
+}
+
 function oh_my_dev() {
   user_exit=false;
   echo "Fetching the last 30 articles from https://dev.to";
@@ -24,17 +38,7 @@ function oh_my_dev() {
   echo;
   echo "Previewing articles:";
   for row in $(jq -r '.[] | @base64' <<< $api_response); do
-    echo;
-    echo "----------";
-    eval $(echo $row | base64 --decode | jq -r '@sh "title=\(.title) description=\(.description) name=\(.user.username) date=\(.readable_publish_date) url=\(.canonical_url)"');
-    echo $(color yellow $title);
-    echo "  Published by $(color yellow $name) on $(color yellow $date)";
-    echo;
-    echo $(color yellow $description);
-    echo;
-    echo "Read the full article on $(color yellow $url)";
-    echo "----------";
-    echo;
+    format_and_print_article $row;
 
     if read -q "choice?Press Y/y to preview another article, or any other key to cancel: "; then
       echo;
