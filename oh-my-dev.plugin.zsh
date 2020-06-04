@@ -3,12 +3,7 @@
 function fetch_api() {
   base_url="https://dev.to/api";
   url_path="/articles";
-  
-  if [ $1 ]; then
-    url=$base_url$url_path$1;
-  else
-    url=$base_url$url_path;
-  fi
+  url="$base_url$url_path$1?tag=$1";
   
   response=$(curl $url);
   echo $response;
@@ -18,7 +13,7 @@ function ohmydev_tag() {
   user_exit=false;
   echo "Fetching the articles tagged $1";
   echo;
-  api_response=$(fetch_api "?tag=$1");
+  api_response=$(fetch_api $1);
   echo;
   echo "Done";
 
