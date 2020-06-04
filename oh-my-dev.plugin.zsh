@@ -24,13 +24,9 @@ function oh_my_dev() {
   echo;
   echo "Previewing articles:";
   for row in $(jq -r '.[] | @base64' <<< $api_response); do
-    function _jq() {
-      echo $row | base64 --decode | jq -r $1;
-    }
-
     echo;
     echo "----------";
-    eval $(_jq '@sh "title=\(.title) description=\(.description) name=\(.user.username) date=\(.readable_publish_date) url=\(.canonical_url)"');
+    eval $(echo $row | base64 --decode | jq -r '@sh "title=\(.title) description=\(.description) name=\(.user.username) date=\(.readable_publish_date) url=\(.canonical_url)"');
     echo $(color yellow $title);
     echo "  Published by $(color yellow $name) on $(color yellow $date)";
     echo;
