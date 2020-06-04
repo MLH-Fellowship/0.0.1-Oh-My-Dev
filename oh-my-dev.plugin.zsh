@@ -3,49 +3,46 @@
 function fetch_api() {
   base_url="https://dev.to/api";
   url_path="/articles";
-  url=$base_url$url_path;
+  
+  if [ $1 ]; then
+    url=$base_url$url_path$1;
+  else
+    url=$base_url$url_path;
+  fi
   
   response=$(curl $url);
   echo $response;
 }
 
 function ohmydev_tag() {
-  counter=0;
-  FGBLUE=`echo "\033[35m"`;
-  NORMAL=`echo "\033[m"`;
-
-  base_url="https://dev.to/api/articles?tag=$1&per_page=9";
-  echo "${FGBLUE}fetching articles with tagged $1... ${NORMAL}";
-  response=$(curl $base_url);
-  
-  title=$(echo $response | jq ".[$counter].title");
-  description=$(echo $response | jq ".[$counter].title");
-  url=$(echo $response | jq ".[$counter].url");
+  user_exit=false;
+  echo "Fetching the articles tagged $1";
+  echo;
+  api_response=$(fetch_api "?tag=$1");
+  echo;
+  echo "Done";
 
   echo;
-  echo "------------------------------------------------------------";
-  echo "${FGBLUE}title: ${NORMAL}$title \n${FGBLUE}description: ${NORMAL}$description \n${FGBLUE}url: ${NORMAL}$url";
-  echo "------------------------------------------------------------";
-  echo;
-  
-  read "?See more [y/Y] [n/N] " input;
-  while [ $input = "y" ]
-  do
-    counter=$((counter+1));
+  echo "Previewing articles:";
+  for row in $(jq -r '.[] | @base64' <<< $api_response); do
+    format_and_print_article $row;
 
-    title=$(echo $response | jq ".[$counter].title");
-    description=$(echo $response | jq ".[$counter].title");
-    url=$(echo $response | jq ".[$counter].url");
-
-    echo;
-    echo "------------------------------------------------------------";
-    echo "${FGBLUE}title: ${NORMAL}$title \n${FGBLUE}description: ${NORMAL}$description \n${FGBLUE}url: ${NORMAL}$url";
-    echo "------------------------------------------------------------";
-    echo;
-  
-    read "?See more [y/Y] [n/N] " input;
+    if read -q "choice?Press Y/y to preview another article, or any other key to cancel: "; then
+      echo;
+      continue;
+    else
+      user_exit=true;
+      echo;
+      echo;
+      echo "See you later!";
+      break;
+    fi
   done
-  echo "See you next time!"
+
+  if [[ $user_exit = false ]]; then
+    echo;
+    echo "We have no more articles, please come back later!";
+  fi
 }
 
 function color() {
