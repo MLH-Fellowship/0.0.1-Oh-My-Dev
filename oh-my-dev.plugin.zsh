@@ -84,6 +84,6 @@ function oh_my_dev() {
 }
 
 alias oh_my_dev='oh_my_dev';
-alias oh_my_dev_tag="ohmydev_tag $1";
 
-ohmydev_tag $1;
+# test locally by calling ohmydev_tag on the next line
+alias oh_my_dev_tag="ohmydev_tag $1";
