@@ -24,4 +24,4 @@ setup locally to be able to use.
 
 - `$ oh_my_dev` - This command fetches articles from Dev.to and links for checking them up on the internet
 - `$ oh_my_dev <tag name>` - This command fetches all articles tagged  \<tag name\>  on the Dev.to platform
-- `$ oh_my_dev make_post - This command is used to create a draft article from the zsh terminal to dev.to
+- `$ oh_my_dev make_post` - This command is used to create a draft article from the zsh terminal to dev.to
