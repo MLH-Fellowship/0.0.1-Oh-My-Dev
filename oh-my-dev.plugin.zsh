@@ -39,7 +39,7 @@ function format_and_print_article() {
 
 function oh_my_dev() {
   if [[ $1 = "make_post" ]]; then
-    echo "Api key"
+    echo "Enter your https://dev.to API key"
     read key
 
     echo "Enter title for your article"
@@ -48,13 +48,15 @@ function oh_my_dev() {
     echo "Enter a description for your article"
     read desc
 
-    echo "Enter body content"
+    echo "Enter the body content for your article"
     read body
     
-    makePost=$(make_post $key $title $desc $body)
-    echo $makePost
-    # encodedPost=$(jq -r '.[] | @base64' <<< $makePost)
-    # format_and_print_article $encodePost
+    echo "Posting your article";
+    echo;
+    make_post_response=$(make_post $key $title $desc $body)
+    format_and_print_article $(jq -r '. | @base64' <<< $make_post_response)
+    echo;
+    echo "Done";
   else
     user_exit=false;
     echo "Fetching the last 30 articles from https://dev.to";
