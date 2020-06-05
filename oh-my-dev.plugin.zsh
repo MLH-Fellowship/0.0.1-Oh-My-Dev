@@ -1,27 +1,19 @@
-#!/bin/zsh
 # dev.to search from terminal
 
 function fetch_api() {
   base_url="https://dev.to/api";
   url_path="/articles";
-  url="$base_url$url_path?tag=$1&per_page=3";
+  url="$base_url$url_path?tag=$1&per_page=2";
   
   response=$(curl $url);
   echo $response;
 }
 
 function make_post() {
-  if [[ $publish = "y" ]]; then
-    $publish = true
-  else
-    $publish = false
-  fi
-
-  echo "$title outputs here and the body content here too $body"
   response=$(curl -X POST -H "Content-Type: application/json" \
   -H "api-key: $key" \
-  -d '{"article":{"title":"'$title'","body_markdown":"'$body'","published": "'$publish'","tags":["discuss", "javascript"]}}' \
-  "$url" | jq '.')
+  -d '{"article":{"title":"'$title'","description":"'$desc'","body_markdown":"'$body'","published":false,"tags":["discuss", "javascript"]}}' \
+  https://dev.to/api/articles | jq '.')
 
   echo $response
 }
@@ -42,6 +34,7 @@ function format_and_print_article() {
   echo "Read the full article on $(color yellow $url)";
   echo "----------";
   echo;
+
 }
 
 function oh_my_dev() {
@@ -52,14 +45,16 @@ function oh_my_dev() {
     echo "Enter title for your article"
     read title
 
+    echo "Enter a description for your article"
+    read desc
+
     echo "Enter body content"
     read body
-
-    echo "Do you want to publish now? Enter y to publish, anything else if not"
-    read publish
     
-    makePost=$(make_post $key $title $body $publish)
+    makePost=$(make_post $key $title $desc $body)
     echo $makePost
+    # encodedPost=$(jq -r '.[] | @base64' <<< $makePost)
+    # format_and_print_article $encodePost
   else
     user_exit=false;
     echo "Fetching the last 30 articles from https://dev.to";
