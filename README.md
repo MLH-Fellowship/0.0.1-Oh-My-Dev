@@ -16,8 +16,8 @@ This plugin is not part of the default plugins that comes with the official Oh M
 setup locally to be able to use.
 
 - Fork and clone this repository locally to your machine
-- Move the directory to your **.oh-my-zsh** plugin directory in `~/.oh-my-zsh/plugin`
-- Open your zshrc file `$ nano ~/.zshrc` and add the plugin `plugin=(git 0.0.1-oh-my-dev)`
+- Move the directory to your **.oh-my-zsh** plugin directory in `~/.oh-my-zsh/custom/plugin`
+- Open your zshrc file `$ nano ~/.zshrc` and add the plugin `plugin=(oh_my_dev)`
 
 ### Basic commands
 
