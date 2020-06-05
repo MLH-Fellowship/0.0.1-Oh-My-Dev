@@ -45,8 +45,6 @@ function oh_my_dev() {
     
     makePost=$(make_post $key $title $body $publish)
     echo $makePost
-    #eval $(_jq '@sh "title=\(.title)"')
-
   else 
     api_response=$(fetch_api);
   fi
