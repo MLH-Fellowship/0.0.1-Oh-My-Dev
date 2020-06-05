@@ -13,7 +13,7 @@ function make_post() {
   response=$(curl -X POST -H "Content-Type: application/json" \
   -H "api-key: $key" \
   -d '{"article":{"title":"'$title'","description":"'$desc'","body_markdown":"'$body'","published":false,"tags":["discuss", "javascript"]}}' \
-  https://dev.to/api/articles | jq '.')
+  https://dev.to/api/articles | jq '.url')
 
   echo $response
 }
@@ -53,9 +53,9 @@ function oh_my_dev() {
     
     echo "Posting your article";
     echo;
-    make_post_response=$(make_post $key $title $desc $body)
-    format_and_print_article $(jq -r '. | @base64' <<< $make_post_response)
-    echo;
+    makePost=$(make_post $key $title $desc $body)
+    echo "Your article draft is up, use the below link to get it"
+    echo $makePost
     echo "Done";
   else
     user_exit=false;
