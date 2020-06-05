@@ -58,41 +58,4 @@ function oh_my_dev() {
   fi
 }
 
-function ohmydev_tag() {
-  user_exit=false;
-  echo "Fetching the articles tagged $1";
-  echo;
-  api_response=$(fetch_api $1);
-  echo;
-  echo "Done";
-
-  echo;
-  echo "Previewing articles:";
-  for row in $(jq -r '.[] | @base64' <<< $api_response); do
-  echo $row
-    format_and_print_article $row;
-
-    if read -q "choice?Press Y/y to preview another article, or any other key to cancel: "; then
-      echo;
-      continue;
-    else
-      user_exit=true;
-      echo;
-      echo;
-      echo "See you later!";
-      break;
-    fi
-  done
-
-  if [[ $user_exit = false ]]; then
-    echo;
-    echo "We have no more articles, please come back later!";
-  fi
-}
-
-alias oh_my_dev='oh_my_dev';
-
-# test locally by calling ohmydev_tag on the next line
-alias oh_my_dev_tag="ohmydev_tag $1";
-ohmydev_tag $1;
-# oh_my_dev $1;
+oh_my_dev $1;
