@@ -88,5 +88,3 @@ function oh_my_dev() {
     fi
   fi
 }
-
-oh_my_dev $1;
