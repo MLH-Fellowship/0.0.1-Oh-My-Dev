@@ -4,7 +4,7 @@
 function fetch_api() {
   base_url="https://dev.to/api";
   url_path="/articles";
-  url=$base_url$url_path;
+  url="$base_url$url_path?tag=$1&per_page=3";
   
   response=$(curl $url);
   echo $response;
@@ -60,11 +60,11 @@ function oh_my_dev() {
     
     makePost=$(make_post $key $title $body $publish)
     echo $makePost
-  else 
+  else
     user_exit=false;
     echo "Fetching the last 30 articles from https://dev.to";
     echo;
-    api_response=$(fetch_api);
+    api_response=$(fetch_api $1);
     echo;
     echo "Done";
 
@@ -93,4 +93,3 @@ function oh_my_dev() {
 }
 
 oh_my_dev $1;
-
